@@ -16,3 +16,16 @@ def readAndParser(fileName):
                     newList = []
                 newList.append(lineList[2])
     return dataset
+def save_csv(table, items, fileName):
+    with open(fileName, "w+") as f:
+        f.write(','.join(table))
+        for item in items:
+            f.write('\n')
+            line=[]
+            for t in table:
+                if t in item:
+                    line.append("1")
+                else:
+                    line.append("0")
+            f.write(','.join(line))
+            
