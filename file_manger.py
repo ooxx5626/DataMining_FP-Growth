@@ -26,6 +26,6 @@ def save_csv(table, datas, fileName):
                 if t in item:
                     line.append("T")
                 else:
-                    line.append("F")
+                    line.append("")
             f.write(','.join(line))
             

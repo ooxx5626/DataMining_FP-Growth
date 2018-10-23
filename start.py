@@ -51,8 +51,24 @@ def getPattern(myHeaderTab, patterns):
 
 def clear_frozenset(string):
     return str(string).replace("frozenset({","").replace("})","").replace("'","").replace(',','').split(' ')
-simpDat = loadSimpDat()
-                                             
+def checkIsexist(item, datas):
+    exist_count = 0
+    isexist = False
+    for i in item:
+        if i in datas :
+            exist_count+=1
+    if exist_count == len(item):
+        isexist=True
+    return isexist
+    
+def checkAnyexist(item_i, item_j):
+    isexist = False
+    for i in item_i:
+        for j in item_j:
+            if i == j:
+                isexist = True
+    return isexist
+simpDat = loadSimpDat()                             
 # simpDat = file_manger.readAndParser("data.ntrans_1.ascii.tlen_5.nitems_1.npats_2")
 table = get_table(simpDat) 
 file_manger.save_csv(table, simpDat, 'weka.csv')  
@@ -62,6 +78,27 @@ save = []
 myFPtree.disp(save = save)
 for s in save:
     print(s)
+freqItems = []
+node_class.mineTree(myFPtree, myHeaderTab, 2, set([]), freqItems)
+for item_i in freqItems:
+    for item_j in freqItems:
+        if item_i != item_j:
+            item_i_count=0
+            item_j_count=0
+            if not (checkIsexist(item_i, item_j) or checkIsexist(item_j, item_i) or checkAnyexist(item_i, item_j)):
+                for datas in simpDat:
+                    if checkIsexist(item_i, datas):
+                        item_i_count += 1
+                    
+                    if checkIsexist(item_i, datas) and checkIsexist(item_j, datas):
+                        item_j_count += 1
+                if item_i_count != 0 and item_j_count != 0 and item_j_count/item_i_count>=0.5 and item_j_count!=1:
+                    print(item_i," >>> ", item_j)
+                    print("item_i_count :", item_i_count)
+                    print("item_j_count :", item_j_count)
+                    print("conf :", item_j_count/item_i_count)
+
+print(freqItems)
 # patterns={}
 # getPattern(myHeaderTab, patterns)
 
@@ -74,4 +111,4 @@ for s in save:
 #             for pat in index['pat']:
 #                 each_frequent_pattern[pat] =  each_frequent_pattern.get(pat, 0) + index["count"]
 #         print(each_frequent_pattern)
-# # print(Fre_pattern)s
+# # print(Fre_patte

@@ -80,7 +80,19 @@ def findPrefixPath(treeNode): #treeNode comes from header table
             condPats[frozenset(prefixPath[1:])] = treeNode.count
         treeNode = treeNode.nodeLink
     return condPats
-
+def mineTree(inTree,headerTable,minSup,preFix,freqItemList):
+    bigL = [v[0] for v in sorted(headerTable.items(), key=lambda p: str(p[1]))]
+    for basePat in bigL:
+        newFreqSet = preFix.copy()
+        newFreqSet.add(basePat)
+        freqItemList.append(newFreqSet)
+        condPattBases = findPrefixPath(headerTable[basePat][1])
+        myConTree,myHead = createTree(condPattBases, minSup)
+        
+        if myHead != None:
+            # print('conditional tree for :', newFreqSet)
+            # myConTree.show()
+            mineTree(myConTree, myHead, minSup, newFreqSet, freqItemList)
 # def updateHeaderTable(dataSet, minSup, headerTable):
 #     for trans in dataSet:#first pass counts frequency of occurance
 #         for item in trans:
