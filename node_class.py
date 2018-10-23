@@ -16,6 +16,11 @@ class treeNode:
         # print ('  '*ind, self.name, ' ', self.count)
         for child in self.children.values():
             child.disp(ind+1, save = save)
+
+    def show(self, ind=1):
+        print ('  '*ind, self.name, ' ', self.count)
+        for child in self.children.values():
+            child.show(ind+1)
 def createTree(dataSet, minSup):  #構建FP-tree
     headerTable = {}
     for trans in dataSet:   #第一次scan，建item對應的次數之表格
@@ -29,7 +34,7 @@ def createTree(dataSet, minSup):  #構建FP-tree
     
     if len(freqItemSet) == 0:   #若是空item集，回傳None
         return None, None
-    for k in sorted(headerTable.keys()):   #建Table，存放指向有關聯的item
+    for k in headerTable:   #建Table，存放指向有關聯的item
         headerTable[k] = [headerTable[k], None]
     #print ('headerTable: ',headerTable)
     retTree = treeNode('Null Set', 1, None)    #初始化tree(Root)

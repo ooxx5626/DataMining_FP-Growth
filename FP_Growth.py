@@ -5,6 +5,7 @@ Created on Thu Oct 18 21:24:10 2018
 @author: Tony
 """
 
+import file_manger
 class treeNode:   #定義一個Tree
     def __init__(self,nameValue, numCount, parentNode):
         self.name = nameValue #紀錄item的名字
@@ -131,25 +132,35 @@ def fpGrowth(dataSet, minSup=2):
 if __name__=="__main__":
     
     #測試itemset和creat-tree
+#     result = {
+#   'a': lambda x: x * 5,
+#   'b': lambda x: x + 7,
+#   'c': lambda x: x - 2
+# }['a'](1)
+    # x=float("1.78")
+    # x = round(x)
+    # print(x)
+    datas = file_manger.readKaggle()
     
-    simpDat = loadSimpDat()
-    initSet = createInitSet(simpDat)
-    myFPtree, myHeaderTab = createTree(initSet, 2)
-    myFPtree.show()
-#    
-#    #測試findPrefixPath
-#   
-    for index in myHeaderTab:
-        print(index,findPrefixPath('Bread', myHeaderTab[index][1]))
-    # print("z",findPrefixPath('z', myHeaderTab['z'][1]))
-    # print("r",findPrefixPath('r', myHeaderTab['r'][1]))
-#    
-#    #測試mineTree
-#    
-#    freqItems = []
-#    mineTree(myFPtree,  myHeaderTab, 2, set([]), freqItems)
-#    print(freqItems)
+    file_manger.save_file(datas)
+#     simpDat = loadSimpDat()
+#     initSet = createInitSet(simpDat)
+#     myFPtree, myHeaderTab = createTree(initSet, 2)
+#     myFPtree.show()
+# #    
+# #    #測試findPrefixPath
+# #   
+#     for index in myHeaderTab:
+#         print(index,findPrefixPath('Bread', myHeaderTab[index][1]))
+#     # print("z",findPrefixPath('z', myHeaderTab['z'][1]))
+#     # print("r",findPrefixPath('r', myHeaderTab['r'][1]))
+# #    
+# #    #測試mineTree
+# #    
+# #    freqItems = []
+# #    mineTree(myFPtree,  myHeaderTab, 2, set([]), freqItems)
+# #    print(freqItems)
     
-    dataSet = loadSimpDat()
-    freqItems = fpGrowth(dataSet)
-    print(freqItems)
+#     dataSet = loadSimpDat()
+#     freqItems = fpGrowth(dataSet)
+#     print(freqItems)

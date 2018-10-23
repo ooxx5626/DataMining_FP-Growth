@@ -60,7 +60,7 @@ def checkIsexist(item, datas):
     if exist_count == len(item):
         isexist=True
     return isexist
-    
+
 def checkAnyexist(item_i, item_j):
     isexist = False
     for i in item_i:
@@ -68,47 +68,65 @@ def checkAnyexist(item_i, item_j):
             if i == j:
                 isexist = True
     return isexist
-simpDat = loadSimpDat()                             
-# simpDat = file_manger.readAndParser("data.ntrans_1.ascii.tlen_5.nitems_1.npats_2")
-table = get_table(simpDat) 
-file_manger.save_csv(table, simpDat, 'weka.csv')  
-initSet = node_class.createInitSet(simpDat)
-myFPtree, myHeaderTab = node_class.createTree(initSet, 2) 
-save = []
-myFPtree.disp(save = save)
-for s in save:
-    print(s)
-freqItems = []
-node_class.mineTree(myFPtree, myHeaderTab, 2, set([]), freqItems)
-for item_i in freqItems:
-    for item_j in freqItems:
-        if item_i != item_j:
-            item_i_count=0
-            item_j_count=0
-            if not (checkIsexist(item_i, item_j) or checkIsexist(item_j, item_i) or checkAnyexist(item_i, item_j)):
-                for datas in simpDat:
-                    if checkIsexist(item_i, datas):
-                        item_i_count += 1
-                    
-                    if checkIsexist(item_i, datas) and checkIsexist(item_j, datas):
-                        item_j_count += 1
-                if item_i_count != 0 and item_j_count != 0 and item_j_count/item_i_count>=0.5 and item_j_count!=1:
-                    print(item_i," >>> ", item_j)
-                    print("item_i_count :", item_i_count)
-                    print("item_j_count :", item_j_count)
-                    print("conf :", item_j_count/item_i_count)
+def associate(freqItems, simpDat):
+    with open("save_data/associate.txt", "w+") as f:
+        rules_count = 0
+        for item_i in freqItems:
+            for item_j in freqItems:
+                if item_i != item_j:
+                    item_i_count=0
+                    item_j_count=0
+                    if not (checkIsexist(item_i, item_j) or checkIsexist(item_j, item_i) or checkAnyexist(item_i, item_j)):
+                        for datas in simpDat:
+                            if checkIsexist(item_i, datas):
+                                item_i_count += 1
+                            
+                            if checkIsexist(item_i, datas) and checkIsexist(item_j, datas):
+                                item_j_count += 1
+                        if item_i_count != 0 and item_j_count != 0 and item_j_count/item_i_count>=0.5 and item_j_count!=1:
+                            print("{} >>> {}".format(item_i, item_j))
+                            # print("item_i_count : {}".format(item_i_count))
+                            # print("item_j_count : {}".format(item_j_count))
+                            print("conf : {}".format(item_j_count/item_i_count))
+                            f.write("{} >>> {}\n".format(item_i, item_j))
+                            # f.write("item_i_count : {}\n".format(item_i_count))
+                            # f.write("item_j_count : {}\n".format(item_j_count))
+                            f.write("conf : {}\n".format(item_j_count/item_i_count))
+                            rules_count +=1
+        print("rules_count : {}".format(rules_count))
+        f.write("rules_count : {}\n".format(rules_count))
 
-print(freqItems)
-# patterns={}
-# getPattern(myHeaderTab, patterns)
+def do_IBMData():
+    # simpDat = loadSimpDat()
+    simpDat = file_manger.readAndParser("data.ntrans_1.ascii.tlen_5.nitems_1.npats_2")
+    table = get_table(simpDat)
+    print(simpDat)
+    file_manger.save_csv(table, simpDat, 'weka_IBM.csv')  
+    initSet = node_class.createInitSet(simpDat)
+    myFPtree, myHeaderTab = node_class.createTree(initSet, 2) 
+    save = []
+    myFPtree.disp(save = save)
+    for s in save:
+        print(s)
+    file_manger.save_tree(save, "save.txt")
+    freqItems = []
+    node_class.mineTree(myFPtree, myHeaderTab, 2, set([]), freqItems)
+    associate(freqItems, simpDat)
 
-# for item in patterns:
-#     if patterns[item] !=[]:
-#         print("item : ",item)
-#         each_frequent_pattern = {}
-#         for index in patterns[item]:
-#             print("patterns[item][index] : ", index)
-#             for pat in index['pat']:
-#                 each_frequent_pattern[pat] =  each_frequent_pattern.get(pat, 0) + index["count"]
-#         print(each_frequent_pattern)
-# # print(Fre_patte
+    print(freqItems)
+def do_KaggleData():
+    simpDat = file_manger.readKaggle()
+    file_manger.save_csv_K(simpDat[0], simpDat, 'weka_K.csv')  
+    initSet = node_class.createInitSet(simpDat[1:])
+    print(initSet)
+    myFPtree, myHeaderTab = node_class.createTree(initSet, 10) 
+    save = []
+    myFPtree.show()
+    file_manger.save_tree(save, "save.txt")
+    freqItems = []
+    node_class.mineTree(myFPtree, myHeaderTab, 10, set([]), freqItems)
+    associate(freqItems, simpDat)
+    print(freqItems)
+do_IBMData()
+# do_KaggleData()
+
