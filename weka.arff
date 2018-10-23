@@ -1,0 +1,18 @@
+@relation weka-weka.filters.unsupervised.attribute.NumericToNominal-Rfirst-last
+
+@attribute Bread {0,1}
+@attribute Milk {0,1}
+@attribute Beer {0,1}
+@attribute Coffee {0,1}
+@attribute Egg {0,1}
+
+@data
+1,1,1,0,0
+1,0,0,1,0
+1,0,0,0,1
+1,1,0,1,0
+0,1,0,0,1
+1,0,0,0,1
+0,1,0,0,1
+1,1,1,0,1
+1,1,0,0,1
