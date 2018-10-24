@@ -5,6 +5,10 @@ This project use 3 dataset to implement Apriori Algorithm with FP-Growth
 2. IBM Quest Data Generator
 3. Kaggle dataset(https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings)
 
+## IF you are Teacher or TA
+Please read report [Report.pdf](https://github.com/ooxx5626/DataMining_FP-Growth/blob/master/Report.pdf)
+
+
 ## Getting Started
 Select your data in start.py
 ```
