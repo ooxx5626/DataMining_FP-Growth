@@ -1,5 +1,5 @@
 # DataMining_HW1
-
+==This MD is not my report!!!!!==
 This project use 3 dataset to implement Apriori Algorithm with FP-Growth
 1. Dataset from Power Point im class
 2. IBM Quest Data Generator
