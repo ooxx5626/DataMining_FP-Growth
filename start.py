@@ -1,6 +1,7 @@
 import node_class
 import file_manger
 import json
+import apriori
 from collections import defaultdict
 
 # def newSimpDat(arr):
@@ -132,6 +133,12 @@ def do_KaggleData():
     node_class.mineTree(myFPtree, myHeaderTab, 10, set([]), freqItems)
     associate(freqItems, simpDat)
     print(freqItems)
-do_IBMData()
+def do_apriori():
+    # D =loadSimpDat()
+    simpDat = file_manger.readAndParser("data.ntrans_1.ascii.tlen_5.nitems_1.npats_2") #讀檔案
+    # simpDat = file_manger.readKaggle()
+    itemset = apriori.start(simpDat, 0.3)
+    print('\nfrequent itemset:\n', itemset)
+# do_IBMData()
 # do_KaggleData()
-
+do_apriori()
